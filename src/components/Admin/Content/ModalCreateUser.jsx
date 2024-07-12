@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import {Modal, Button} from 'react-bootstrap'
 import { FcPlus } from "react-icons/fc";
-import { createQuiz } from '../../untils/ApiFunction';
+import { createQuiz } from '../../../services/ApiFunction';
+import { toast } from 'react-toastify';
 
 const ModalCreateUser = (props) => {
   const {show, setShow} = props;
@@ -31,26 +32,33 @@ const ModalCreateUser = (props) => {
     }
   }
 
-   const handleSubmitCreateUser = async() =>{
-    // let data = {
-    //     email: email,
-    //     password: password,
-    //     username: username,
-    //     role: role,
-    //     userImage: image
-    // }
-    // console.log(data)
-    const data = new FormData();
-    data.append('email', email);
-    data.append('password', password)
-    data.append('username', username)
-    data.append('role', role)
-    data.append('userImage', image)
-    let response = await createQuiz(data)
-    console.log(">>> check res:", response);
-   }
-    
+  const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
 
+   const handleSubmitCreateUser = async() =>{
+    const isValidEmail = validateEmail(email)
+    if(!isValidEmail){
+      toast.error("Invalid email !!!");
+      return;
+    }
+    if(!password){
+      toast.error("Invalid password !!!");
+      return;
+    }
+    let data = await createQuiz(email, password, username, role, image);
+    if(data && data.EC === 0){
+      toast.success(data.EM);
+      handleClose();
+    }
+    if(data && data.EC !== 0){
+      toast.error(data.EM);
+    }
+   }
 
   return (
     <>
