@@ -1,5 +1,5 @@
 import React from 'react'
-import {Container,  Nav, NavDropdown, Navbar} from 'react-bootstrap';
+import {Container,  Nav, NavDropdown, Navbar, Button} from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 
 const Header = () => {
@@ -15,11 +15,13 @@ const Header = () => {
             <NavLink to='/admins'  className='nav-link'>Admin</NavLink>
           </Nav>
           <Nav>
-            <NavDropdown title="Settings" id="basic-nav-dropdown">
+            <Button variant='outline-secondary' className='btn-login'>Log in</Button>
+            <Button variant='outline-dark' className='btn-signup'>Sign up</Button>
+            {/* <NavDropdown title="Settings" id="basic-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Log in</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">Log out</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">Profile</NavDropdown.Item>
-            </NavDropdown>
+            </NavDropdown> */}
           </Nav>
         </Navbar.Collapse>
       </Container>
