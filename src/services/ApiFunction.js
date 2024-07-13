@@ -30,3 +30,7 @@ export async function deleteUser(userId){
 export async function getUserWithPaginate(page, limit){
     return api.get(`api/v1/participant?page=${page}&limit=${limit}`);
 }
+
+export async function postLogin(email, password){
+    return api.post(`/api/v1/login`, {email, password})
+}
