@@ -1,8 +1,10 @@
-import React from 'react'
-import videoHomePage from '../../assets/video-homepage.mp4'
-import { Button } from 'react-bootstrap'
+import React from 'react';
+import videoHomePage from '../../assets/video-homepage.mp4';
+import { Button } from 'react-bootstrap';
 
 const Home = (props) => {
+    
+
   return (
     <div className='homepage-container'>
         <video autoPlay muted loop>

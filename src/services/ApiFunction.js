@@ -32,5 +32,9 @@ export async function getUserWithPaginate(page, limit){
 }
 
 export async function postLogin(email, password){
-    return api.post(`/api/v1/login`, {email, password})
+    return api.post(`/api/v1/login`, {email, password, delay:5000})
+}
+
+export async function postRegister(email, password, username){
+    return api.post(`/api/v1/login`, {email, password, username})
 }

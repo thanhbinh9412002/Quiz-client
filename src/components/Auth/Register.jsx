@@ -2,23 +2,17 @@ import React, { useState, useRef } from 'react'
 import user from '../../assets/user.png';
 import './scss/login.scss';
 import { useNavigate } from 'react-router-dom';
-import { postLogin } from '../../services/ApiFunction';
+import { postRegister } from '../../services/ApiFunction';
 import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
 import { MdOutlineRemoveRedEye, MdOutlineVisibilityOff } from 'react-icons/md';
-import { doLogin } from '../../redux/action/userAction';
-import { ImSpinner9 } from "react-icons/im";
 
-const Login = (props) => {
+const Register = (props) => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
-
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
-    const [isLoading, setIsLoading] = useState(false);
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("");
     const [showPassword, setShowPassword] = useState(false);
 
     const handleShowPassword = () => {
@@ -33,36 +27,39 @@ const Login = (props) => {
         );
     };
 
-    
-    const handleLogin = async() =>{
-      const isValidEmail = validateEmail(email)
-      if(!isValidEmail){
-        toast.error("Invalid email !!!");
-        if (emailRef.current) {
-          emailRef.current.focus();
+    const handleRegister = async() =>{
+        const isValidEmail = validateEmail(email)
+        if(!email){
+            toast.error("Invalid email !!!")
+            if (emailRef.current) {
+                emailRef.current.focus();
+            }
+            return;
         }
-        return;
-      }
-      if(!password){
-        toast.error("Invalid password !!!");
-        if (passwordRef.current) {
-          passwordRef.current.focus();
+        if(!isValidEmail){
+            toast.error("Invalid email !!!");
+            if (emailRef.current) {
+                emailRef.current.focus();
+            }
+            return;
         }
-        return;
-      }
-      setIsLoading(true);
-      let data = await postLogin(email, password);
-      if(data && data.EC === 0){
-        dispatch(doLogin(data))
-        toast.success(data.EM);
-        setIsLoading(false);
-        navigate('/');
-      }
-      if(data && data.EC !== 0){
-        setIsLoading(false);
-        toast.error(data.EM);
-      }
+        if(!password){
+            toast.error("Invalid password !!!");
+            if (passwordRef.current) {
+                passwordRef.current.focus();
+            }
+            return;
+        }
+        let data = await postRegister(email, password, username);
+        if(data && data.EC === 0){
+            toast.success(data.EM);
+            navigate('/login');
+        }
+        if(data && data.EC !== 0){
+            toast.error(data.EM);
+        }
     }
+
   return (
     <div className="form-02-main">
       <div className="container">
@@ -96,7 +93,16 @@ const Login = (props) => {
                     </span>
                 </div>
 
-                <div className="checkbox form-group">
+                <div className="form-group">
+                  <input type="text" name="email" 
+                        className="form-control _ge_de_ol"  
+                        placeholder="Enter username" 
+                        required="" aria-required="true"
+                        value={username}
+                        onChange={(event) => setUsername(event.target.value)}/>
+                </div>
+
+                {/* <div className="checkbox form-group">
                   <div className="form-check">
                     <input className="form-check-input" type="checkbox" value="" id=""/>
                     <label className="form-check-label" >
@@ -104,19 +110,19 @@ const Login = (props) => {
                     </label>
                   </div>
                   <a href="###">Forgot Password</a>
-                </div>
+                </div> */}
+
 
                 <div className="form-group">
-                  <button className="_btn_04" disabled={isLoading} onClick={()=> handleLogin()}>
-                    {isLoading === true && <ImSpinner9 className="loaderIcon"/>}
-                    <a> Log in</a>
-                  </button>
+                  <div className="_btn_04" onClick={()=> handleRegister()}>
+                    <a>Sign up</a>
+                  </div>
                 </div>
 
                 <div className='form-group'>
                     <div className='row'>
-                        <div className='col-7 p-2 text-center'>Don't have an account yet?</div>
-                        <button onClick={()=> navigate('/register')} className='col-5 me-auto _btn_05'>Sign up</button>
+                        <div className='col-7 p-2 text-center'>Already have an account?</div>
+                        <button onClick={()=> navigate('/login')} className='col-5 me-auto _btn_05'>Log in</button>
                     </div>
                 </div>
 
@@ -133,4 +139,4 @@ const Login = (props) => {
   )
 }
 
-export default Login
+export default Register
