@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link , useNavigate} from 'react-router-dom';
 import '../../../node_modules/react-pro-sidebar/dist/css/styles.css';
 import {  ProSidebar,Menu, MenuItem, SubMenu, SidebarHeader, SidebarFooter, SidebarContent} from 'react-pro-sidebar';
 import { FaTachometerAlt, FaGem, FaList, FaGithub, FaRegLaughWink, FaHeart } from 'react-icons/fa';
@@ -14,6 +14,7 @@ import './scss/SideBar.scss';
 
 const SideBar = (props) => {
     const { image, collapsed, toggled, handleToggleSidebar } = props;
+    const navigate = useNavigate()
     return (
         <>
             <ProSidebar
@@ -37,7 +38,7 @@ const SideBar = (props) => {
                         }}
                     >
                         <DiReact size={'3em'} color={"00bfff"} />
-                        <span >QUIZ APP</span>
+                        <span onClick={()=>navigate('/')}> QUIZ APP</span>
                     </div>
                 </SidebarHeader>
 
@@ -51,7 +52,7 @@ const SideBar = (props) => {
                     <Menu iconShape="circle">
                         <SubMenu icon={<FaGem />} title="Features">
                             <MenuItem> Quản lý Users <Link to="/admins/manage-users"/> </MenuItem>
-                            <MenuItem > Quản lý Bài Quiz</MenuItem>
+                            <MenuItem > Quản lý Bài Quiz <Link to="/admins/manage-quizzes"/></MenuItem>
                             <MenuItem> Quản lý Câu Hỏi</MenuItem>
                         </SubMenu>
 

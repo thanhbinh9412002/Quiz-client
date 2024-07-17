@@ -1,9 +1,13 @@
 import React from 'react';
 import videoHomePage from '../../assets/video-homepage.mp4';
 import { Button } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const Home = (props) => {
     
+    const isAuthenticated = useSelector(state => state.user.isAuthenticated);
+    const navigate = useNavigate();
 
   return (
     <div className='homepage-container'>
@@ -17,7 +21,11 @@ const Home = (props) => {
                 Create a typeform instead-and make everyone happy.
             </div>
             <div className='title-3'>
-                <Button variant='outline-dark' >Get's started</Button>
+                {isAuthenticated === false ?
+                    <Button variant='outline-dark' onClick={()=>navigate('/login')}>Get's started</Button>
+                    : <Button variant='outline-dark' onClick={()=>navigate('/users')}>Doing quiz now</Button>
+                }
+
             </div>
         </div>
     </div>

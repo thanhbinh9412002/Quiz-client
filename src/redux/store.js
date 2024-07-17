@@ -2,6 +2,8 @@ import { createStore, applyMiddleware, legacy_createStore } from 'redux';
 import {thunk} from 'redux-thunk';
 import rootReducer from './reducer/rootReducer';
 import { composeWithDevTools } from '@redux-devtools/extension';
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
 
 // Tạo store với middleware
 // const store = createStore(
@@ -18,9 +20,16 @@ const composeEnhancers = (middlewares) => {
     : middlewares;
 };
 
+const persistConfig = {
+  key: 'root',
+  storage,
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
 const store = legacy_createStore(
-  rootReducer,
+  persistedReducer,
   composeEnhancers(applyMiddleware(thunk))
 );
+let persistor = persistStore(store)
 
-export default store;
+export { store, persistor }
